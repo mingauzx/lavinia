@@ -68,6 +68,13 @@ async function loadPhotos() {
     }
     if (!pictures.length) throw new Error('Nenhuma foto encontrada')
     photos = pictures.map(bytes => URL.createObjectURL(new Blob([bytes], {type:'image/jpeg'})))
+    if (photos[1]) {
+      const favicon = document.createElement('link')
+      favicon.rel = 'icon'
+      favicon.type = 'image/jpeg'
+      favicon.href = photos[1]
+      document.head.append(favicon)
+    }
     const cover = document.createElement('img')
     cover.className = 'cover-photo'
     cover.src = photos[0]
