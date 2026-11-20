@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f6edf7">
-<meta name="description" content="Um álbum de fotos feito com carinho pra Lavínia.">
-<title>Os dias mais bonitos · Lavínia</title>
+<meta name="description" content="um álbum de fotos feito com carinho pra lavínia.">
+<title>os dias mais bonitos · lavínia</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:#39243e;background:radial-gradient(ellipse at 20% 4%,#f9dce6,transparent 34rem),radial-gradient(ellipse at 100% 42%,#e9dcf7,transparent 40rem),#f9f1f6;font:1rem/1.6 'DM Sans',sans-serif}
@@ -20,17 +20,17 @@ button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inher
 </head>
 <body>
 <div class="wrap">
-<header><a class="brand" href="#inicio"><span aria-hidden="true">♥</span> Pra Lavínia</a><a href="#album">Fotos</a></header>
+<header><a class="brand" href="#inicio"><span aria-hidden="true">♥</span> pra lavínia</a><a href="#album">fotos</a></header>
 <main id="inicio">
 <section class="hero" aria-labelledby="title">
-<div class="hero-copy"><h1 id="title">Os dias mais <em>bonitos</em></h1><p>Um álbum pra você, Lavínia. Pra abrir sempre que der vontade de sorrir um pouquinho.</p><a class="pill" href="#album">Ver as fotos</a></div>
-<div class="cover"><figure><div id="cover-image" class="cover-photo" aria-hidden="true"></div><figcaption>Minha Lavínia ♡</figcaption></figure></div>
+<div class="hero-copy"><h1 id="title">os dias mais <em>bonitos</em></h1><p>um álbum pra você, lavínia. pra abrir sempre que der vontade de sorrir um pouquinho.</p><a class="pill" href="#album">ver as fotos</a></div>
+<div class="cover"><figure><div id="cover-image" class="cover-photo" aria-hidden="true"></div><figcaption>minha lavínia ♡</figcaption></figure></div>
 </section>
-<section id="album" class="album" aria-labelledby="album-title"><div class="album-head"><h2 id="album-title">Meu álbum <em>favorito</em></h2><p>Toque numa foto pra ver de pertinho.</p></div><p id="status" role="status">Carregando fotos…</p><div class="grid" id="photos"></div></section>
+<section id="album" class="album" aria-labelledby="album-title"><div class="album-head"><h2 id="album-title">meu álbum <em>favorito</em></h2><p>toque numa foto pra ver de pertinho.</p></div><p id="status" role="status">carregando fotos…</p><div class="grid" id="photos"></div></section>
 </main>
-<footer>Com carinho, pra você. ♡</footer>
+<footer>com carinho, pra você. ♡</footer>
 </div>
-<dialog id="viewer" aria-label="Foto ampliada"><img id="large-photo" alt=""><div class="controls"><button id="previous" type="button">Anterior</button><span id="count" aria-live="polite"></span><button id="next" type="button">Próxima</button><form method="dialog"><button>Fechar</button></form></div></dialog>
+<dialog id="viewer" aria-label="foto ampliada"><img id="large-photo" alt=""><div class="controls"><button id="previous" type="button">anterior</button><span id="count" aria-live="polite"></span><button id="next" type="button">próxima</button><form method="dialog"><button>fechar</button></form></div></dialog>
 <script>
 const grid = document.querySelector('#photos')
 const status = document.querySelector('#status')
@@ -43,12 +43,12 @@ let active = 0
 function showPhoto(index) {
   active = (index + photos.length) % photos.length
   large.src = photos[active]
-  large.alt = 'Foto ' + (active + 1) + ' da Lavínia'
+  large.alt = 'foto ' + (active + 1) + ' da lavínia'
   count.textContent = (active + 1) + ' / ' + photos.length
 }
 
 async function loadPhotos() {
-  status.textContent = 'Carregando fotos…'
+  status.textContent = 'carregando fotos…'
   try {
     const response = await fetch("WhatsApp%20Unknown%202026-11-20%20at%2014.00.54.zip")
     if (!response.ok) throw new Error('Arquivo indisponível')
@@ -78,7 +78,7 @@ async function loadPhotos() {
     const cover = document.createElement('img')
     cover.className = 'cover-photo'
     cover.src = photos[0]
-    cover.alt = 'Lavínia, na foto de capa'
+    cover.alt = 'lavínia, na foto de capa'
     document.querySelector('#cover-image').replaceWith(cover)
     photos.forEach((src, index) => {
       const tile = document.createElement('div')
@@ -89,9 +89,9 @@ async function loadPhotos() {
       tile.style.setProperty('--delay', (index * 55) + 'ms')
       button.className = 'polaroid'
       button.type = 'button'
-      button.setAttribute('aria-label', 'Ampliar foto ' + (index + 1))
+      button.setAttribute('aria-label', 'ampliar foto ' + (index + 1))
       img.src = src
-      img.alt = 'Foto ' + (index + 1) + ' da Lavínia'
+      img.alt = 'foto ' + (index + 1) + ' da lavínia'
       img.loading = 'lazy'
       img.decoding = 'async'
       heart.textContent = '♡'
@@ -104,11 +104,11 @@ async function loadPhotos() {
     status.textContent = ''
     status.hidden = true
   } catch {
-    status.textContent = 'As fotos não carregaram. '
+    status.textContent = 'as fotos não carregaram. '
     const retry = document.createElement('button')
     retry.type = 'button'
     retry.className = 'retry'
-    retry.textContent = 'Tentar de novo'
+    retry.textContent = 'tentar de novo'
     retry.addEventListener('click', loadPhotos)
     status.append(retry)
   }
