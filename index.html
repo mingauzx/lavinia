@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Uma cartinha feita com carinho pra Lav�nia.">
+<meta name="description" content="Uma cartinha feita com carinho pra Lavínia.">
 <meta name="theme-color" content="#f2e7fa">
-<title>Pra Lav�nia, com carinho</title>
+<title>Pra Lavínia, com carinho</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
 *{box-sizing:border-box}
@@ -29,29 +29,42 @@ button:focus-visible{outline:3px solid #81449f;outline-offset:5px}
 .arrive{animation:arrive .45s ease-out both}
 @keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+main.album-open{width:min(100%,860px)}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));gap:12px;margin:24px 0}.gallery button{display:block;padding:0;border-radius:18px;overflow:hidden;background:#e5cff5;aspect-ratio:4/5}.gallery img{display:block;width:100%;height:100%;object-fit:cover} dialog{border:0;border-radius:22px;padding:12px;background:#fff9f8;max-width:calc(100% - 24px);text-align:center}dialog::backdrop{background:#24142ddd}dialog img{display:block;max-width:min(80vw,700px);max-height:72svh;margin-bottom:12px;border-radius:12px}.album-link{margin-top:12px}
 </style>
 </head>
 <body>
 <main>
 <section id="cover">
-<div class="envelope" aria-hidden="true"><span class="seal"></span></div>
-<h1>Pra <em>Lav�nia</em></h1>
+<div class="envelope" aria-hidden="true"><span class="seal">♥</span></div>
+<h1>Pra <em>Lavínia</em></h1>
 <p>Uma cartinha pra minha pessoa favorita.</p>
-<button id="open" type="button">Abrir cartinha <span aria-hidden="true">?</span></button>
+<button id="open" type="button">Abrir cartinha <span aria-hidden="true">♡</span></button>
+<button class="replay album-link" id="album-link" type="button">Ver álbum de fotos</button>
 </section>
 <section id="letter" class="letter arrive" hidden>
 <h2 id="greeting" tabindex="-1">Oi, meu amor.</h2>
-<p>Eu gosto de como at� uma mensagem sua no meio de um dia qualquer j� me faz sorrir. E de como, mesmo quando a conversa acaba, eu fico pensando em mais alguma coisa s� pra continuar falando com voc�.</p>
-<p>Fiz esse cantinho pra guardar uma coisa que eu podia te dizer todo dia. Que sorte a minha ter voc� na minha vida, Lav�nia.</p>
-<p class="signature">Com todo o meu carinho ?</p>
-<button type="button" id="reveal" aria-expanded="false" aria-controls="surprise">Tem mais uma coisinha.</button>
+<p>Eu gosto de como até uma mensagem sua no meio de um dia qualquer já me faz sorrir. E de como, mesmo quando a conversa acaba, eu fico pensando em mais alguma coisa só pra continuar falando com você.</p>
+<p>Fiz esse cantinho pra guardar uma coisa que eu podia te dizer todo dia. Que sorte a minha ter você na minha vida, Lavínia.</p>
+<p class="signature">Com todo o meu carinho ♡</p>
+<button type="button" id="reveal" aria-expanded="false" aria-controls="surprise">Tem mais uma coisinha…</button>
 <div id="surprise" class="surprise arrive" tabindex="-1" hidden>
-<p aria-hidden="true">??</p>
-<h2>Um vale-abra�o</h2>
-<p>Pode trocar por um abra�o bem demorado na pr�xima vez que me vir. D� pra usar quantas vezes quiser.</p>
+<p aria-hidden="true">💜</p>
+<h2>Um vale-abraço</h2>
+<p>Pode trocar por um abraço bem demorado na próxima vez que me vir. Dá pra usar quantas vezes quiser.</p>
 </div>
 <button type="button" class="replay" id="close">Fechar a cartinha</button>
 </section>
+<section id="album" class="arrive" hidden>
+<h2 id="album-title" tabindex="-1">Meu álbum favorito</h2>
+<p>Um cantinho só pras suas fotos, meu amor. ♡</p>
+<p id="album-status" role="status"></p>
+<div class="gallery"></div>
+<button type="button" id="album-back">Voltar ao envelope</button>
+</section>
+<dialog id="photo-viewer" aria-label="Foto ampliada">
+<img id="full-photo" alt="">
+<form method="dialog"><button type="submit">Fechar foto</button></form>
+</dialog>
 </main>
 <script>
 const cover = document.querySelector('#cover')
@@ -76,6 +89,74 @@ document.querySelector('#close').addEventListener('click', () => {
   cover.hidden = false
   open.focus()
 })
+const album = document.querySelector('#album')
+const albumLink = document.querySelector('#album-link')
+const frame = document.querySelector('main')
+const viewer = document.querySelector('#photo-viewer')
+const fullPhoto = document.querySelector('#full-photo')
+albumLink.addEventListener('click', () => {
+  cover.hidden = true
+  album.hidden = false
+  frame.classList.add('album-open')
+  document.querySelector('#album-title').focus()
+  loadAlbum()
+})
+document.querySelector('#album-back').addEventListener('click', () => {
+  album.hidden = true
+  cover.hidden = false
+  frame.classList.remove('album-open')
+  albumLink.focus()
+})
+viewer.addEventListener('click', event => {
+  if (event.target === viewer) viewer.close()
+})
+const gallery = document.querySelector('.gallery')
+const status = document.querySelector('#album-status')
+let loading = false
+async function loadAlbum() {
+  if (loading || gallery.childElementCount) return
+  loading = true
+  status.textContent = 'Carregando fotos…'
+  try {
+    const response = await fetch("WhatsApp%20Unknown%202026-11-20%20at%2014.00.54.zip")
+    if (!response.ok) throw new Error('Álbum indisponível')
+    const archive = await response.arrayBuffer()
+    const view = new DataView(archive)
+    const photos = []
+    for (let offset = 0; offset + 30 <= view.byteLength && view.getUint32(offset, true) === 0x04034b50;) {
+      const size = view.getUint32(offset + 18, true)
+      const start = offset + 30 + view.getUint16(offset + 26, true) + view.getUint16(offset + 28, true)
+      const end = start + size
+      if (end > view.byteLength) throw new Error('Arquivo incompleto')
+      if (view.getUint16(offset + 8, true) === 0 && size > 3 && view.getUint16(start) === 0xffd8) {
+        photos.push(archive.slice(start, end))
+      }
+      offset = end
+    }
+    if (!photos.length) throw new Error('Fotos indisponíveis')
+    photos.forEach((photo, index) => {
+      const button = document.createElement('button')
+      const img = document.createElement('img')
+      button.type = 'button'
+      button.setAttribute('aria-label', 'Ampliar foto ' + (index + 1))
+      img.src = URL.createObjectURL(new Blob([photo], {type: 'image/jpeg'}))
+      img.alt = 'Foto ' + (index + 1) + ' da Lavínia'
+      img.decoding = 'async'
+      button.append(img)
+      button.addEventListener('click', () => {
+        fullPhoto.src = img.src
+        fullPhoto.alt = img.alt
+        viewer.showModal()
+      })
+      gallery.append(button)
+    })
+    status.textContent = ''
+  } catch {
+    status.textContent = 'Não consegui carregar as fotos. Volte ao envelope e tente abrir o álbum de novo.'
+  } finally {
+    loading = false
+  }
+}
 </script>
 </body>
 </html>
